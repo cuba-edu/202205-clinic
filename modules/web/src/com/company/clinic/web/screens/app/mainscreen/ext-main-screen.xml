@@ -1,5 +1,26 @@
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
         caption="mainMsg://application.caption">
+    <data>
+        <collection id="petsDc" class="com.company.clinic.entity.Pet">
+            <view extends="pet-full"/>
+            <loader id="petsDl">
+                <query>
+                    <![CDATA[select e from clinic_Pet e]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="visitsDc" class="com.company.clinic.entity.Visit" view="visit-browse">
+            <loader id="visitsDl">
+                <query>
+                    <![CDATA[select e from clinic_Visit e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <actions>
+        <action id="schedule" caption="Schedule a Visit" icon="CALENDAR_PLUS_O"/>
+        <action id="refresh" caption="Refresh" icon="REFRESH"/>
+    </actions>
     <layout>
         <cssLayout id="horizontalWrap"
                    stylename="c-sidemenu-layout"
@@ -52,8 +73,35 @@
             <workArea id="workArea"
                       stylename="c-workarea"
                       height="100%">
-                <initialLayout spacing="true" margin="true">
-                    <label value="mainMsg://application.welcomeText" align="MIDDLE_CENTER"/>
+                <initialLayout spacing="true" margin="true" expand="visitsCalendar">
+                    <hbox id="topBox" spacing="true" width="100%" expand="welcomeBox">
+                        <form id="scheduleForm">
+                            <column width="400px">
+                                <lookupField id="petSelector" caption="msg://petSelector.caption" inputPrompt="Please select a Pet"
+                                             optionsContainer="petsDc"/>
+                                <dateField id="dateSelector" caption="msg://dateSelector.caption"/>
+                                <hbox spacing="true" width="AUTO">
+                                    <button id="scheduleBtn" action="schedule" stylename="primary"/>
+                                    <button id="refreshBtn" action="refresh" stylename="my-custom-border-color"/>
+                                </hbox>
+                            </column>
+                        </form>
+                        <vbox id="welcomeBox" height="100%">
+                            <label value="mainMsg://application.welcomeText" align="MIDDLE_CENTER" stylename="h1"/>
+                        </vbox>
+                    </hbox>
+                    <calendar id="visitsCalendar"
+                              dataContainer="visitsDc"
+
+                              startDateProperty="date"
+                              endDateProperty="endDate"
+                              captionProperty="caption"
+                              descriptionProperty="description"
+
+                              firstVisibleHourOfDay="9"
+                              lastVisibleHourOfDay="18"
+
+                              width="100%"/>
                 </initialLayout>
             </workArea>
         </cssLayout>
