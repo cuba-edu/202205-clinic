@@ -19,11 +19,12 @@
                 width="800"/>
     <layout expand="petsTable"
             spacing="true">
-        <filter id="filter"
+        <!--<filter id="filter"
                 applyTo="petsTable"
                 dataLoader="petsDl">
             <properties include=".*"/>
-        </filter>
+        </filter>-->
+        <textField id="filterField" height="AUTO"/>
         <groupTable id="petsTable"
                     width="100%"
                     dataContainer="petsDc">
